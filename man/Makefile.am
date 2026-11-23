@@ -36,6 +36,6 @@ $(dist_man1_MANS): $(SRC_VERSION_C) help2man
 	  && (echo '[NAME]'						\
 	      && sed 's@/\* *@@; s/-/\\-/;s/^GNU //; q' $S/$$base.c)	\
 	     | PATH="$(bin_dir)$(PATH_SEPARATOR)$$PATH"			\
-	       $(srcdir)/help2man -i - -i $(srcdir)/$$base.x		\
+	       $(PERL) -- $(srcdir)/help2man -i - -i $(srcdir)/$$base.x	\
 		 -S '$(PACKAGE) $(VERSION)' $$base > $$base.1-t		\
 	  && mv $$base.1-t $(srcdir)/$$base.1
