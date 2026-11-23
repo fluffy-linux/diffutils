@@ -39,4 +39,16 @@ for opt in '' -u -c; do
   compare exp-$(echo $opt|tr ' ' _) out || fail=1
 done
 
+# Verify -l (--paginate) resolves pr through wildcard PATH entries.
+mkdir -p wroot/pkg/bin || fail=1
+cat <<'EOF' > wroot/pkg/bin/pr || fail=1
+#!/sw/bash/bin/bash
+echo "PAGINATED:$1:$2"
+cat
+EOF
+chmod +x wroot/pkg/bin/pr || fail=1
+returns_ 1 env PATH="$(pwd)/wroot/*/bin:$PATH" diff -l a b > out-pr 2> err-pr || fail=1
+grep '^PAGINATED:-h:diff -l a b$' out-pr >/dev/null || fail=1
+rm -rf wroot out-pr err-pr
+
 Exit $fail

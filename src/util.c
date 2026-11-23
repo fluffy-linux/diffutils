@@ -846,7 +846,7 @@ begin_output (void)
 	      close (pipes[0]);
 	    }
 
-	  execv (pr_program, (char **) argv);
+	  execvp (pr_program, (char **) argv);
 	  _exit (errno == ENOENT ? 127 : 126);
 	}
       else
